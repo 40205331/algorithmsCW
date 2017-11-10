@@ -38,9 +38,9 @@ board =[["      ","   1   ", "     2    ","    3    ","    4    ","   5   ", "  
 			['----------------------------------------------------------------------------------'], 
 		 	["   2 " , emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag()],
 		 	['----------------------------------------------------------------------------------'], 
-		 	["   4 " , hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace()],
+		 	["   4 " , hashtag(), atsign(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace()],
 		 	['----------------------------------------------------------------------------------'],
-		 	["   6 " , emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag()],
+		 	["   6 " , atsign(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag()],
 		 	['----------------------------------------------------------------------------------'],
 		 	["   8 " , emptySpace(), emptySpace(), emptySpace(), emptySpace(), emptySpace(), emptySpace(), emptySpace(), emptySpace()],
 		 	['----------------------------------------------------------------------------------'],
@@ -48,7 +48,7 @@ board =[["      ","   1   ", "     2    ","    3    ","    4    ","   5   ", "  
 		 	['----------------------------------------------------------------------------------'],
 		 	["   12 " , atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace()],
 		 	['----------------------------------------------------------------------------------'],
-		 	["   14 " , emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign()], 
+		 	["   14 " , hashtag(), atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign()], 
 		 	['----------------------------------------------------------------------------------'],
 		 	["   16 " , atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace()]]
 
@@ -112,18 +112,30 @@ def team1(board):
 				print "Please enter a number: "	
 				continue
 			except ValueError:
-				print "dick cheese: "	
+				print "please enter a number: "	
 				continue
 			else:
 				ColDestinationInt = int(ColDestination)
 				break
 
 		# Movement validations
-		if RowDestinationInt == RowCoordinateInt:
-			print "Invalid move. Must move forward"
-			continue
+		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsign()):
+			if RowDestinationInt >= RowCoordinateInt:
+				print "Invalid move. Must move diagonally forward"
+				continue
+		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsignKing()):
+			if RowDestinationInt == RowCoordinateInt:
+				print "Invalid move. Must move diagonally forward or backwards"
+				continue
+			
 		if ColDestinationInt == ColCoordinateInt:
 			print "Invalid move. Must move left or right"
+			continue
+		if type(board[RowDestinationInt][ColDestinationInt]) == type(hashtag()):
+			print "Invalid move. Already a counter here"
+			continue
+		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtag()):
+			print "Invalid move. this is an enemy"
 			continue
 		if type(board[RowDestinationInt][ColDestinationInt]) == type(atsign()):
 			print "Invalid move. Already a counter here"
@@ -131,6 +143,7 @@ def team1(board):
 		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(emptySpace()):
 			print "Invalid move. Can't move empty space"
 			continue
+		
 
 
 		if type(board[RowCoordinateInt - 4][ColCoordinateInt - 2]) == type(emptySpace()):
@@ -152,9 +165,13 @@ def team1(board):
 				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
 					for row in board]))
 				break
-
+		
 		if  RowDestinationInt == 2:
-			board[RowDestinationInt][ColCoordinateInt] = atsignKing()
+			board[RowDestinationInt][ColDestinationInt] = atsignKing()
+			board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+			#print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+			 #   for row in board]))
+	        #break
 
 		else:
 			print "else"
@@ -222,7 +239,7 @@ def team2(board):
 				print "Please enter a number: "	
 				continue
 			except ValueError:
-				print "dick cheese: "	
+				print "please enter a number: "	
 				continue
 			else:
 				ColDestinationInt = int(ColDestination)
@@ -265,6 +282,11 @@ def team2(board):
 					for row in board]))
 				print "2"
 				break
+		
+		if  RowDestinationInt == 16:
+			board[RowDestinationInt][ColDestinationInt] = hashtagKing()
+			board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+		
 
 		else:
 			print "else"
