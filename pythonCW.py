@@ -38,7 +38,7 @@ board =[["      ","   1   ", "     2    ","    3    ","    4    ","   5   ", "  
 			['----------------------------------------------------------------------------------'], 
 		 	["   2 " , emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag()],
 		 	['----------------------------------------------------------------------------------'], 
-		 	["   4 " , hashtag(), atsign(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace()],
+		 	["   4 " , hashtag(), atsign(), hashtag(), hashtag(), hashtag(), emptySpace(), hashtag(), emptySpace()],
 		 	['----------------------------------------------------------------------------------'],
 		 	["   6 " , atsign(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag(), emptySpace(), hashtag()],
 		 	['----------------------------------------------------------------------------------'],
@@ -48,14 +48,14 @@ board =[["      ","   1   ", "     2    ","    3    ","    4    ","   5   ", "  
 		 	['----------------------------------------------------------------------------------'],
 		 	["   12 " , atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace()],
 		 	['----------------------------------------------------------------------------------'],
-		 	["   14 " , hashtag(), atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign()], 
+		 	["   14 " , hashtag(), atsign(), atsignKing(), atsign(), emptySpace(), atsign(), emptySpace(), atsign()], 
 		 	['----------------------------------------------------------------------------------'],
 		 	["   16 " , atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace(), atsign(), emptySpace()]]
 
 print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
 	    for row in board]))
 def team1(board):
-
+	print "team 1 turn"
 	while True:
 
 		while True:
@@ -69,6 +69,9 @@ def team1(board):
 			except ValueError:
 				print "Please enter a number: "	
 				continue
+			if RowCoordinateInt not in ["2", "4", "6", "8", "10", "12", "14", "16"]:
+				print "row coordinate out of range"
+				continue 
 			else:
 				RowCoordinateInt = int(RowCoordinate)
 				break
@@ -83,6 +86,9 @@ def team1(board):
 				continue
 			except ValueError:
 				print "Please enter a number: "	
+				continue
+			if ColCoordinateInt not in ["1", "2", "3", "4", "5", "6", "7",]:
+				print "column coordinate out of range"
 				continue
 			else:
 				ColCoordinateInt = int(ColCoordinate)
@@ -99,6 +105,9 @@ def team1(board):
 			except ValueError:
 				print "Please enter a number: "	
 				continue
+			if RowDestinationInt not in ["2", "4", "6", "8", "10", "12", "14", "16"]:
+				print "row coordinate out of range"
+				continue 
 			else:
 				RowDestinationInt = int(RowDestination)
 				break
@@ -119,6 +128,7 @@ def team1(board):
 				break
 
 		# Movement validations
+		# 
 		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsign()):
 			if RowDestinationInt >= RowCoordinateInt:
 				print "Invalid move. Must move diagonally forward"
@@ -131,6 +141,7 @@ def team1(board):
 		if ColDestinationInt == ColCoordinateInt:
 			print "Invalid move. Must move left or right"
 			continue
+			
 		if type(board[RowDestinationInt][ColDestinationInt]) == type(hashtag()):
 			print "Invalid move. Already a counter here"
 			continue
@@ -145,44 +156,108 @@ def team1(board):
 			continue
 		
 
-
-		if type(board[RowCoordinateInt - 4][ColCoordinateInt - 2]) == type(emptySpace()):
-			if type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(hashtag()):
+		if RowCoordinateInt > 4:
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsign()):
+				if type(board[RowCoordinateInt - 4][ColCoordinateInt - 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(hashtag()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt - 2][ColCoordinateInt - 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = atsign()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+						
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsign()):
+				if type(board[RowCoordinateInt - 4][ColCoordinateInt + 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(hashtag()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt - 2][ColCoordinateInt + 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = atsign()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+			
+		print RowDestinationInt
+		print ColDestinationInt
+		if  RowDestinationInt == 2:
+			print "lllll"
+			board[RowDestinationInt][ColDestinationInt] = atsignKing()
+			board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+			print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+			break
+			
+		if RowCoordinateInt > 4:
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsignKing()):	
+				if type(board[RowCoordinateInt - 4][ColCoordinateInt + 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(hashtag()) or type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(hashtagKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt - 2][ColCoordinateInt + 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = atsignKing()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+			
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsignKing()):		
+				print "193"
+				if type(board[RowCoordinateInt - 4][ColCoordinateInt - 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(hashtag()) or type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(hashtagKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt - 2][ColCoordinateInt - 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = atsignKing()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+			
+		if RowCoordinateInt < 14:		
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsignKing()):		
+				print "204"
+				if type(board[RowCoordinateInt + 4][ColCoordinateInt + 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt + 2][ColCoordinateInt + 1]) == type(hashtag()) or type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(hashtagKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt + 2][ColCoordinateInt + 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = atsignKing()
+						print "208"
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+		
+		
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsignKing()):		
+				if type(board[RowCoordinateInt + 4][ColCoordinateInt - 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt + 2][ColCoordinateInt - 1]) == type(hashtag()) or type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(hashtagKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt + 2][ColCoordinateInt - 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = atsignKing()
+						print "219"
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+		
+		if RowDestinationInt > 2:
+			print "1"
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsign()):
+				print "else"
 				board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
-				board[RowCoordinateInt - 2][ColCoordinateInt - 1] = emptySpace()
 				board[RowDestinationInt][ColDestinationInt] = atsign()
-				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
-					for row in board]))
-				print board[RowDestinationInt - 2][ColDestinationInt - 1]
-				print RowDestinationInt
-				print ColDestinationInt
-				break
-		if type(board[RowCoordinateInt - 4][ColCoordinateInt + 2]) == type(emptySpace()):
-			if type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(hashtag()):
-				board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
-				board[RowCoordinateInt - 2][ColCoordinateInt + 1] = emptySpace()
-				board[RowDestinationInt][ColDestinationInt] = atsign()
+		
 				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
 					for row in board]))
 				break
 		
-		if  RowDestinationInt == 2:
-			board[RowDestinationInt][ColDestinationInt] = atsignKing()
-			board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
-			#print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
-			 #   for row in board]))
-	        #break
-
-		else:
-			print "else"
-			board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
-			board[RowDestinationInt][ColDestinationInt] = atsign()
-			
-	        print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
-			    for row in board]))
-	        break
+		if RowDestinationInt > 2:
+			print "2"
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsignKing()):
+				print "else"
+				board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+				board[RowDestinationInt][ColDestinationInt] = atsignKing()
+		
+				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+					for row in board]))
+				break
 
 def team2(board):
+	print "team 2 turn"
 	while True:
 
 		while True:
@@ -196,6 +271,9 @@ def team2(board):
 			except ValueError:
 				print "Please enter a number: "	
 				continue
+			if RowCoordinateInt not in ["2", "4", "6", "8", "10", "12", "14", "16"]:
+				print "row coordinate out of range"
+				continue 
 			else:
 				RowCoordinateInt = int(RowCoordinate)
 				break
@@ -226,6 +304,9 @@ def team2(board):
 			except ValueError:
 				print "Please enter a number: "	
 				continue
+			if RowDestinationInt not in ["2", "4", "6", "8", "10", "12", "14", "16"]:
+				print "row coordinate out of range"
+				continue 
 			else:
 				RowDestinationInt = int(RowDestination)
 				break
@@ -244,11 +325,20 @@ def team2(board):
 			else:
 				ColDestinationInt = int(ColDestination)
 				break
+		
+		
 
 		# Movement validations
-		if RowDestinationInt == RowCoordinateInt:
-			print "Invalid move. Must move forward"
-			continue
+		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtag()):
+			if RowDestinationInt <= RowCoordinateInt:
+				print "Invalid move. Must move forward"
+				continue
+		
+		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtagKing()):
+			if RowDestinationInt == RowCoordinateInt:
+				print "Invalid move. Must move diagonally forward or backwards"
+				continue
+				
 		if ColDestinationInt == ColCoordinateInt:
 			print "Invalid move. Must move left or right"
 			continue
@@ -258,45 +348,112 @@ def team2(board):
 		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(emptySpace()):
 			print "Invalid move. Can't move empty space"
 			continue
+		if type(board[RowDestinationInt][ColDestinationInt]) == type(atsign()):
+			print "Invalid move. Already a counter here"
+			continue
+		if type(board[RowCoordinateInt][ColCoordinateInt]) == type(atsign()):
+			print "Invalid move. this is an enemy"
+			continue
+		
 
-
-		if type(board[RowCoordinateInt - 4][ColCoordinateInt - 2]) == type(emptySpace()):
-			if type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(atsign()):
-				board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
-				board[RowCoordinateInt - 2][ColCoordinateInt - 1] = emptySpace()
-				board[RowDestinationInt][ColDestinationInt] = hashtag()
-				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
-					for row in board]))
-				print '1'
-				print board[RowDestinationInt - 2][ColDestinationInt - 1]
-				print RowDestinationInt
-				print ColDestinationInt
-				break
-		if type(board[RowCoordinateInt - 4][ColCoordinateInt + 2]) == type(emptySpace()):
-			print "sss"
-			if type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(atsign()):
-				board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
-				board[RowCoordinateInt - 2][ColCoordinateInt + 1] = emptySpace()
-				board[RowDestinationInt][ColDestinationInt] = hashtag()
-				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
-					for row in board]))
-				print "2"
-				break
+		if RowCoordinateInt < 14:
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtag()):
+				if type(board[RowCoordinateInt + 4][ColCoordinateInt - 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt + 2][ColCoordinateInt - 1]) == type(atsign()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt + 2][ColCoordinateInt - 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = hashtag()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+						
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtag()):
+				if type(board[RowCoordinateInt - 4][ColCoordinateInt + 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(atsign()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt - 2][ColCoordinateInt + 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = hashtag()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
 		
 		if  RowDestinationInt == 16:
 			board[RowDestinationInt][ColDestinationInt] = hashtagKing()
 			board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+			print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+			break
 		
-
-		else:
-			print "else"
-			board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
-			board[RowDestinationInt][ColDestinationInt] = atsign()
+		if RowCoordinateInt < 14:
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtagKing()):	
+				if type(board[RowCoordinateInt + 4][ColCoordinateInt + 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt + 2][ColCoordinateInt + 1]) == type(atsign()) or type(board[RowCoordinateInt + 2][ColCoordinateInt + 1]) == type(atsignKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt + 2][ColCoordinateInt + 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = hashtagKing()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
 			
-	        print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
-			    for row in board]))
-	        break
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtagKing()):		
+				print "193"
+				if type(board[RowCoordinateInt + 4][ColCoordinateInt - 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt + 2][ColCoordinateInt - 1]) == type(atsign()) or type(board[RowCoordinateInt + 2][ColCoordinateInt - 1]) == type(atsignKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt + 2][ColCoordinateInt - 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = hashtagKing()
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+						
+		if RowCoordinateInt > 4:		
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtagKing()):		
+				print "204"
+				if type(board[RowCoordinateInt - 4][ColCoordinateInt + 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(atsign()) or type(board[RowCoordinateInt - 2][ColCoordinateInt + 1]) == type(atsignKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt - 2][ColCoordinateInt + 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = hashtagKing()
+						print "208"
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+		
+		
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtagKing()):		
+				if type(board[RowCoordinateInt - 4][ColCoordinateInt - 2]) == type(emptySpace()):
+					if type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(atsign()) or type(board[RowCoordinateInt - 2][ColCoordinateInt - 1]) == type(atsignKing()):
+						board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+						board[RowCoordinateInt - 2][ColCoordinateInt - 1] = emptySpace()
+						board[RowDestinationInt][ColDestinationInt] = hashtagKing()
+						print "219"
+						print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+							for row in board]))
+						break
+						
+		if RowDestinationInt < 16:
+			print "1"
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtag()):
+				print "else"
+				board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+				board[RowDestinationInt][ColDestinationInt] = hashtag()
+		
+				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+					for row in board]))
+				break
+		
+		
+			
+			if type(board[RowCoordinateInt][ColCoordinateInt]) == type(hashtagKing()):
+				print "else"
+				board[RowCoordinateInt][ColCoordinateInt] = emptySpace()
+				board[RowDestinationInt][ColDestinationInt] = hashtagKing()
+		
+				print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+					for row in board]))
+				break
+
 while True:
 	team1(board)
 	team2(board)
-	break
+	
